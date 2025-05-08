@@ -1,0 +1,10 @@
+﻿Recuerda ahora todo lo que es
+int
+bool
+string
+char
+float
+double
+decimal
+se llamaran primitivos y aqui ya no se ocupara mas este tipo de datos
+vamos a ocupar object value

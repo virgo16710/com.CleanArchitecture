@@ -1,0 +1,6 @@
+﻿Esto es una entidad, como vez de ejemplo
+esta entidad se llama vehiculo
+y tiene un id que es un Guid creado por el sistema
+este tiene una direccion, modelo, vin o mas
+entonces vehiculo no es creado por datos directos
+sino que son Object Values
