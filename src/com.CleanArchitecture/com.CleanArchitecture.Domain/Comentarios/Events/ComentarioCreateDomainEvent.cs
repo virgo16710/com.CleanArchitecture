@@ -2,5 +2,5 @@
 
 namespace com.CleanArchitecture.Domain.Comentarios.Events
 {
-    public record ComentarioCreateDomainEvent(Guid ComentarioId) : IDomainEvent;
+    public record ComentarioCreateDomainEvent(ReviewId ComentarioId) : IDomainEvent;
 }

@@ -1,6 +1,7 @@
 using Bogus;
 using com.CleanArchitecture.Application.Abstractions.Data;
 using com.CleanArchitecture.Domain.Vehiculos;
+using Dapper;
 
 namespace com.CleanArchitecture.Api.Extensions
 {
@@ -32,6 +33,15 @@ namespace com.CleanArchitecture.Api.Extensions
                     FechaUltima = DateTime.MinValue
                 });
             }
+
+            const string sql = """
+                INSERT INTO public.vehiculos
+                    (id,vin,modelo,direccion_pais,direccion_departamento,direccion_provincia,direccion_ciudad,direccion_calle,precio_monto,precio_tipo_moneda,mantenimiento_monto,mantenimiento_tipo_moneda,accesorios,fecha_ultima_alquiler)
+                    values(@id,@Vin,@Modelo,@Pais,@Departamento,@Provincia,@Ciudad,@Calle,@PrecioMonto,@PrecioTipoMoneda,@PrecioMantenimiento,@PrecioMantenimientoTipoMoneda,@Accesorios,@FechaUltima)
+
+            """;
+
+            connection.Execute(sql, vehiculos);
         }
    } 
 }

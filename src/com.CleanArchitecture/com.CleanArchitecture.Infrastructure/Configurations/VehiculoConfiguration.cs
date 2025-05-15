@@ -16,6 +16,8 @@ namespace com.CleanArchitecture.Infrastructure.Configurations
         {
             builder.ToTable("vehiculos");
             builder.HasKey(x => x.Id);
+            builder.Property(x => x.Id)
+                .HasConversion(x => x!.Value, value => new VehiculoId(value));
             builder.OwnsOne(x => x.Direccion);
             builder.Property(x => x.Modelo)
                 .HasMaxLength(200)

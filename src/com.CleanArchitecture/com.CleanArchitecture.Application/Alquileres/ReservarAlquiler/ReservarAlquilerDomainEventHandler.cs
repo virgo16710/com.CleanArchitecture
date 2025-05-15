@@ -30,7 +30,7 @@ namespace com.CleanArchitecture.Application.Alquileres.ReservarAlquiler
                 (notification.AlquilerId, cancellationToken);
             if(alquiler is null) return;
             var user = await _userRepository.GetByIdAsync
-                (alquiler.UserId, cancellationToken);
+                (alquiler!.UserId!, cancellationToken);
             if (user is null) return;
            await _emailService.SendAsync(
                 user.Email!,

@@ -33,31 +33,35 @@ namespace com.CleanArchitecture.Application.Vehiculos.SearchVehiculos
             if (request.fechaInicio > request.fechaFin)
                 return new List<VehiculoResponse>();
             using var connection = _sqlConnectionFactory.CreateConnection();
-            var sql = """
-            SELECT
-             a.id AS Id,
-             a.modelo as Modelo,
-             a.vin as Vin,
-             a.precio_monto as Precio,
-             a.precio_tipo_moneda as TipoMoneda,
-             a.direccion_pais as Pais,
-             a.direccion_departamento as Departamento,
-             a.direccion_provincia as Provincia,
-             a.direccion_ciudad as Ciudad,
-             a.direccion_calle as Calle,
-            FROM vehiculos AS a
-            WHERE NOT EXISTS
-            (
-                SELECT 1
-                FROM alquileres AS b
-                WHERE b.vehiculo_id = a.id
-                b.duracion_inicio <= @StarDate AND
-                b.duracion_fin >= @EndDate   AND
-                b.status = ANY(@ActiveAlquilerStatuses)
-            )
+            const string sql = """
+               SELECT
+                a.id as Id,
+                a.modelo as Modelo,
+                a.vin as Vin,
+                a.precio_monto as Precio,
+                a.precio_tipo_moneda as TipoMoneda,
+                a.direccion_pais as Pais,
+                a.direccion_departamento as Departamento,
+                a.direccion_provincia as Provincia,
+                a.direccion_ciudad as Ciudad,
+                a.direccion_calle as Calle
+             FROM vehiculos AS a
+             WHERE NOT EXISTS
+             (
+                    SELECT 1 
+                    FROM alquileres AS b
+                    WHERE 
+                        b.vehiculo_id = a.id  AND
+                        b.duracion_start <= @EndDate AND
+                        b.duracion_end  >= @StartDate AND
+                        b.status = ANY(@ActiveAlquilerStatuses)
+             )      
+        """;
 
 
-            """;
+
+
+
             var vehiculos = await connection.
                 QueryAsync<VehiculoResponse,DireccionResponse,VehiculoResponse>(
                 sql,
@@ -68,7 +72,7 @@ namespace com.CleanArchitecture.Application.Vehiculos.SearchVehiculos
                 },
                 new
                 {
-                    StarDate = request.fechaInicio,
+                    StartDate = request.fechaInicio,
                     EndDate = request.fechaFin,
                     ActiveAlquilerStatuses
                 } ,

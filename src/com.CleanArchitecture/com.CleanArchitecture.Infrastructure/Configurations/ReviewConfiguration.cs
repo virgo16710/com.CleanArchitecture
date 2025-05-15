@@ -4,11 +4,6 @@ using com.CleanArchitecture.Domain.Users;
 using com.CleanArchitecture.Domain.Vehiculos;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace com.CleanArchitecture.Infrastructure.Configurations
 {
@@ -18,12 +13,14 @@ namespace com.CleanArchitecture.Infrastructure.Configurations
         {
             builder.ToTable("reviews");
             builder.HasKey(x => x.Id);
+            builder.Property(x => x.Id)
+                .HasConversion(x => x!.Value, value => new ReviewId(value));
             builder.Property(review => review.Rating)
-                .HasConversion(rating => rating.Value, value => Rating.Create(value).Value);
+                .HasConversion(rating => rating!.Value, value => Rating.Create(value).Value);
 
             builder.Property(review => review.Comentario)
                 .HasMaxLength(200)
-                .HasConversion(comentario => comentario.value, value => new Comentario(value));
+                .HasConversion(comentario => comentario!.value, value => new Comentario(value));
 
             builder.HasOne<Vehiculo>()
                 .WithMany()

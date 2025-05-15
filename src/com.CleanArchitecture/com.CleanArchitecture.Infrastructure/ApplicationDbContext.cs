@@ -44,7 +44,7 @@ namespace com.CleanArchitecture.Infrastructure
         private async Task PublishDomainEventsAsync()
         {
             var domainEvents = ChangeTracker
-                 .Entries<Entity>()
+                 .Entries<IEntity>()
                  .Select(entry => entry.Entity)
                  .SelectMany(entity =>
                  {

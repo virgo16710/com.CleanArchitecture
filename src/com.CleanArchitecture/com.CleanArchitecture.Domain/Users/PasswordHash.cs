@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace com.CleanArchitecture.Domain.Comentarios
+namespace com.CleanArchitecture.Domain.Users
 {
-    public sealed record Comentario(string value);
+   public record PasswordHash(string Value);
 }

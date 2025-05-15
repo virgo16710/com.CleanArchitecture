@@ -7,5 +7,5 @@ using System.Threading.Tasks;
 
 namespace com.CleanArchitecture.Domain.Alquileres.Events
 {
-    public sealed record AlquilerCompletadoDomainEvent(Guid AlquilerId) : IDomainEvent;
+    public sealed record AlquilerCompletadoDomainEvent(AlquilerId AlquilerId) : IDomainEvent;
 }

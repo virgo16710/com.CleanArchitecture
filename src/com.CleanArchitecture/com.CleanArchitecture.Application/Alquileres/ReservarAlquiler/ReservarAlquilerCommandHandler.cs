@@ -38,9 +38,11 @@ namespace com.CleanArchitecture.Application.Alquileres.ReservarAlquiler
             ReservarAlquilerCommand request,
             CancellationToken cancellationToken)
         {
-            var user = await _userRepository.GetByIdAsync(request.UserId, cancellationToken);
+            var userId = new UserId(request.UserId);
+            var user = await _userRepository.GetByIdAsync(userId, cancellationToken);
             if (user is null) return Result.Failure<Guid>(UserErrors.NotFound);
-            var vehiculo = await _vehiculoRepository.GetByIdAsync(request.VehiculoId, cancellationToken);
+            var vehiculoId = new VehiculoId(request.VehiculoId);
+            var vehiculo = await _vehiculoRepository.GetByIdAsync( vehiculoId, cancellationToken);
             if (vehiculo is null) return Result.Failure<Guid>(VehiculoErrors.NotFound);
             var duracion = DateRange.Create(request.Start, request.End);
             if (await _alquilerRepository.IsOverlappingAsync(vehiculo, duracion, cancellationToken))
@@ -49,14 +51,14 @@ namespace com.CleanArchitecture.Application.Alquileres.ReservarAlquiler
             {
                 var alquiler = Alquiler.Reservar(
                     vehiculo,
-                    user.Id,
+                    user.Id!,
                     duracion,
                     _datetimeProvider.currentTime,
                     _precioService
                     );
                 _alquilerRepository.Add(alquiler);
                 await _unitOfWork.SaveChangesAsync(cancellationToken);
-                return alquiler.Id;
+                return alquiler!.Id!.Value;
             }
             catch(ConcurrencyException)
             {

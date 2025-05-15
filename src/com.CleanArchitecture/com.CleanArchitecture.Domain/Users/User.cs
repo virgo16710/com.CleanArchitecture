@@ -1,20 +1,17 @@
 ﻿using com.CleanArchitecture.Domain.Abstractions;
 using com.CleanArchitecture.Domain.Users.Events;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace com.CleanArchitecture.Domain.Users
 {
-    public sealed class User : Entity
+    public sealed class User : Entity<UserId>
     {
         private User() { }
-        private User(Guid id,
+        private User(
+            UserId id,
             Nombre nombre,
             Apellido apellido,
-            Email email
+            Email email,
+            PasswordHash? passwordHash
             ) : base(id)
         {
             Id = id;
@@ -25,15 +22,16 @@ namespace com.CleanArchitecture.Domain.Users
         public Nombre? Nombre { get; private set; }
         public Apellido? Apellido { get; private set; }
         public Email? Email { get; private set; }
+        public PasswordHash? PasswordHash { get; private set; }
         public static User Create(
-            Guid id,
             Nombre nombre,
             Apellido apellido,
-            Email email
+            Email email,
+            PasswordHash passwordHash
             )
         {
-           var user = new User( Guid.NewGuid(),nombre,apellido,email);
-            user.RaiseDomainEvent(new UserCreateDomainEvent(user.Id));
+           var user = new User( UserId.New(),nombre,apellido,email,passwordHash);
+            user.RaiseDomainEvent(new UserCreateDomainEvent(user.Id!));
             return user;
         }
 

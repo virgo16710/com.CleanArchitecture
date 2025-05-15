@@ -4,11 +4,6 @@ using com.CleanArchitecture.Domain.Users;
 using com.CleanArchitecture.Domain.Vehiculos;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace com.CleanArchitecture.Infrastructure.Configurations
 {
@@ -18,6 +13,8 @@ namespace com.CleanArchitecture.Infrastructure.Configurations
         {
             builder.ToTable("alquileres");
             builder.HasKey(x => x.Id);
+            builder.Property(x => x.Id)
+                .HasConversion(x => x!.Value, value => new AlquilerId(value));
 
             builder.OwnsOne(alquiler => alquiler.PrecioPorPeriodo, PrecioBuilder =>
             {

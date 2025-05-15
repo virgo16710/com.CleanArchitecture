@@ -6,5 +6,8 @@ using System.Threading.Tasks;
 
 namespace com.CleanArchitecture.Domain.Comentarios
 {
-    public sealed record Comentario(string value);
+    public record ReviewId(Guid Value)
+    {
+        public static ReviewId New() => new(Guid.NewGuid());
+    }
 }
